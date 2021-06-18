@@ -145,7 +145,7 @@ class DatabaseSetup
         {
             $sth = $this->dbh->prepare("FLUSH PRIVILEGES");
             $sth->execute();
-            $this->climate->lightMagenta("Added a user with the username $username and the password $password. Copy this username and password, you'll need it!");
+            $this->climate->lightMagenta("Added a user with the username $username and the password $password . Copy this username and password, you'll need it!");
         }
         else
         {
