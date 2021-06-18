@@ -24,19 +24,19 @@ sudo apt-get install --yes php-cli php-mbstring php-mysql unzip
 sudo apt-get install --yes mariadb-server mariadb-client
 sudo apt-get install --yes freeradius freeradius-common freeradius-utils freeradius-mysql
 
-### XXX we should test for swap not try to blindly create one XXX ###
+### we should test for an existing swap device or file before we go ahead and try to create one  ###
 
 /usr/bin/fallocate -l 4G /swapfile
 /bin/chmod 600 /swapfile
 /sbin/mkswap /swapfile
 /sbin/swapon /swapfile
 echo '/swapfile none swap sw 0 0' >> /etc/fstab
+
 /sbin/sysctl vm.swappiness=10
 echo 'vm.swappiness=10' >> /etc/sysctl.conf
 /sbin/sysctl vm.vfs_cache_pressure=50
 echo 'vm.vfs_cache_pressure=50' >> /etc/sysctl.c
 
-# correct order  
 echo "if this is your first run it is now time to secure the mysql installation this will allow you to create the root mysql passowrd needed later on "
 
 sudo /usr/bin/mysql_secure_installation
