@@ -6,12 +6,12 @@ if lsb_release -d | awk -F"\t" '{print $2}' | grep -q 20.04
                 then
                 echo "found ubuntu 20.04"
                 echo "adding (deb https://packages.networkradius.com/releases/ubuntu-focal focal main) to (/etc/apt/sources.list)" 
-                echo "deb https://packages.networkradius.com/releases/ubuntu-focal focal main >> /etc/apt/sources.list" 
+                echo 'deb https://packages.networkradius.com/releases/ubuntu-focal focal main' >> /etc/apt/sources.list 
         elif lsb_release -d | awk -F"\t" '{print $2}' | grep -q 18.04
                 then
                 echo "found ubuntu 18.04"
                 echo "adding ( https://packages.networkradius.com/releases/ubuntu-bionic bionic main) to (/etc/apt/sources.list)" 
-                echo "deb https://packages.networkradius.com/releases/ubuntu-bionic bionic main >> /etc/apt/sources.list" 
+                echo 'deb https://packages.networkradius.com/releases/ubuntu-bionic bionic main' >> /etc/apt/sources.list 
 fi
 
 # import networkradius.com pgp key 
