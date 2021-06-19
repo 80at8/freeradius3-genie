@@ -39,8 +39,8 @@ class FreeRadiusSetup
                 CommandExecutor::executeCommand("/bin/ln -fs /etc/freeradius/mods-available/detail_coa -t /etc/freeradius/mods-enabled/");
                 CommandExecutor::executeCommand("/bin/cp " . __DIR__ . $c . "default /etc/freeradius/sites-available/");
                 CommandExecutor::executeCommand("/bin/ln -fs /etc/freeradius/sites-available/default -t /etc/freeradius/sites-enabled/");
-                CommandExecutor::executeCommand("/bin/cp " . __DIR__ . $c . "coa_relay /etc/freeradius/sites-available/");
-                CommandExecutor::executeCommand("/bin/ln -fs /etc/freeradius/sites-available/coa_relay -t /etc/freeradius/sites-enabled/");
+                CommandExecutor::executeCommand("/bin/cp " . __DIR__ . $c . "coa-relay /etc/freeradius/sites-available/");
+                CommandExecutor::executeCommand("/bin/ln -fs /etc/freeradius/sites-available/coa-relay -t /etc/freeradius/sites-enabled/");
                 CommandExecutor::executeCommand("/bin/sed -i 's/password = \"radpass\"/password = \"$mysqlPassword\"/g' /etc/freeradius/mods-enabled/sql");
                 CommandExecutor::executeCommand("/usr/sbin/service freeradius restart");
             }
