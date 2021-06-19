@@ -314,7 +314,7 @@ home_server coa-nas1 {
         type = coa
 
         # Update these to match your NAS
-        ipaddr = nasipaddress
+        ipaddr = 127.0.0.1
         port = 3799
         secret = nassecuresecret
 
