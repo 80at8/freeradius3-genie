@@ -38,13 +38,15 @@ Run the following commands to complete these steps:
 2. `sudo apt-get install freeradius freeradius-common freeradius-utils freeradius-mysql`
 
 Once all packages are installed, you can download FreeRADIUS3 Genie.
-make sure you are in the root of your home directory `cd ~` 
-then download by executing `wget https://github.com/ellisway/freeradius3-genie/archive/master.zip` 
-once downloaded `unzip master.zip` 
-once unzipped, rename the directory `mv freeradius3_genie-master/ freeradius3_genie/` 
-enter the directory by typing `cd freeradius_genie-master`.
 
-run genie `php genie` 
+Run these commands from the root of your home directory.
+
+1. `cd ~`
+2. `wget https://github.com/ellisway/freeradius3-genie/archive/master.zip` 
+3. `unzip master.zip`
+4. `mv freeradius3_genie-master/ freeradius3_genie/`
+5. `cd freeradius3_genie`
+6. `php genie` 
 
 ### A note on hosting
 
