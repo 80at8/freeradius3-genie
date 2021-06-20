@@ -1,8 +1,9 @@
 #!/bin/bash
-
-# configure system to use networkradius.com binary packages these are newer than those supplied by ubuntu
-
-# determine for distribution and version and check for existing repo entry
+#
+###     configure system to use networkradius.com binary packages these are newer than those supplied by ubuntu     ###
+#
+###     determine for distribution and version and check for existing repo entry    ###
+#
 
 if lsb_release -d | awk -F"\t" '{print $2}' | grep -q Ubuntu
     then
@@ -56,7 +57,9 @@ elif lsb_release -d | awk -F"\t" '{print $2}' | grep -q Debian
             fi
 fi
 
-# import networkradius.com pgp key
+#
+###     import networkradius.com pgp key    ###
+#
 
 sudo apt-key adv --keyserver keys.gnupg.net --recv-key 0x41382202
 
@@ -66,7 +69,9 @@ sudo apt-get install --yes php-cli php-mbstring php-mysql unzip
 sudo apt-get install --yes mariadb-server mariadb-client
 sudo apt-get install --yes freeradius freeradius-common freeradius-utils freeradius-mysql
 
-### test for an existing swap device or file before we create one  ###
+#
+###     test for an existing swap device or file, if none exists we will create one     ###
+#
 
 if cat /etc/fstab | grep -q swap
         then
@@ -87,10 +92,43 @@ if cat /etc/fstab | grep -q swap
             echo '/swapfile none swap sw 0 0' >> /etc/fstab
 fi
 
-sudo /sbin/sysctl vm.swappiness=10
-sudo echo 'vm.swappiness=10' >> /etc/sysctl.conf
-sudo /sbin/sysctl vm.vfs_cache_pressure=50
-sudo echo 'vm.vfs_cache_pressure=50' >> /etc/sysctl.c
+#
+###     setup sysctl    ### 
+#
+
+if cat /etc/sysctl.conf | grep -q vm.swappiness
+    then
+        echo "vm.swappiness found in sysctl.conf "
+        if sysctl -a | grep -q swappiness
+            then 
+                echo "vm.swappiness appears enabled" 
+            else 
+                echo "vm.swappiness appears disabled we will enable it " 
+                sudo /sbin/sysctl vm.swappiness=10
+        fi
+    else 
+        echo "vm.swappiness was not found in sysctl.conf we will add and enable it now"
+        sudo echo 'vm.swappiness=10' >> /etc/sysctl.conf
+        sudo /sbin/sysctl vm.swappiness=10
+fi
+
+
+if cat /etc/sysctl.conf | grep -q vm.vfs_cache_pressure
+    then
+        echo "vm.vfs_cache_pressure found in sysctl.conf "
+        if sysctl -a | grep -q vm.vfs_cache_pressure
+            then 
+                echo "vm.vfs_cache_pressure appears enabled" 
+            else 
+                echo "vm.vfs_cache_pressure appears disabled we will enable it " 
+                sudo /sbin/sysctl vm.vfs_cache_pressure=50
+        fi
+    else 
+        echo "vm.vfs_cache_pressure was not found in sysctl.conf we will add and enable it now"
+        sudo echo 'vm.vfs_cache_pressure=50' >> /etc/sysctl.conf
+        sudo /sbin/sysctl vm.vfs_cache_pressure=50
+fi
+
 echo ""
 echo "if this is your first run it is now time to secure the mysql installation this will allow you to create the root mysql passowrd needed later on "
 echo ""
