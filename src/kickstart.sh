@@ -10,12 +10,12 @@ if lsb_release -d | awk -F"\t" '{print $2}' | grep -q Ubuntu
                 then
                     echo "found ubuntu 20.04"
                     echo "adding (deb https://packages.networkradius.com/releases/ubuntu-focal focal main) to (/etc/apt/sources.list)"
-                    echo 'deb https://packages.networkradius.com/releases/ubuntu-focal focal main' >> /etc/apt/sources.list
+                    sudo echo 'deb https://packages.networkradius.com/releases/ubuntu-focal focal main' >> /etc/apt/sources.list
             elif lsb_release -d | awk -F"\t" '{print $2}' | grep -q 18.04
                 then
                     echo "found ubuntu 18.04"
                     echo "adding ( https://packages.networkradius.com/releases/ubuntu-bionic bionic main) to (/etc/apt/sources.list)"
-                    echo 'deb https://packages.networkradius.com/releases/ubuntu-bionic bionic main' >> /etc/apt/sources.list
+                    sudo echo 'deb https://packages.networkradius.com/releases/ubuntu-bionic bionic main' >> /etc/apt/sources.list
             fi
 elif lsb_release -d | awk -F"\t" '{print $2}' | grep -q Debian
     then
@@ -23,12 +23,12 @@ elif lsb_release -d | awk -F"\t" '{print $2}' | grep -q Debian
                 then
                     echo "found Debian stretch"
                     echo "adding (deb https://packages.networkradius.com/releases/debian-stretch stretch main) to (/etc/apt/sources.list)"
-                    echo 'deb https://packages.networkradius.com/releases/debian-stretch stretch main' >> /etc/apt/sources.list
+                    sudo echo 'deb https://packages.networkradius.com/releases/debian-stretch stretch main' >> /etc/apt/sources.list
             elif lsb_release -d | awk -F"\t" '{print $2}' | grep -q buster
                 then
                     echo "found Debian buster"
                     echo "adding (deb https://packages.networkradius.com/releases/debian-buster buster main) to (/etc/apt/sources.list)"
-                    echo 'deb https://packages.networkradius.com/releases/debian-buster buster main' >> /etc/apt/sources.list
+                    sudo echo 'deb https://packages.networkradius.com/releases/debian-buster buster main' >> /etc/apt/sources.list
             fi
 fi
 
@@ -52,21 +52,21 @@ if cat /etc/fstab | grep -q swap
                                 echo "swap is enabled"
                         else
                                 echo "swap was not enabled we will enable it now"
-                                swapon -a
+                                sudo swapon -a
                 fi
         else
             echo "no swap found in fstab we will now create and enable a swapfile"
-            /usr/bin/fallocate -l 4G /swapfile
-            /bin/chmod 600 /swapfile
-            /sbin/mkswap /swapfile
-            /sbin/swapon /swapfile
+            sudo /usr/bin/fallocate -l 4G /swapfile
+            sudo /bin/chmod 600 /swapfile
+            sudo /sbin/mkswap /swapfile
+            sudo /sbin/swapon /swapfile
             echo '/swapfile none swap sw 0 0' >> /etc/fstab
 fi
 
-/sbin/sysctl vm.swappiness=10
-echo 'vm.swappiness=10' >> /etc/sysctl.conf
-/sbin/sysctl vm.vfs_cache_pressure=50
-echo 'vm.vfs_cache_pressure=50' >> /etc/sysctl.c
+sudo /sbin/sysctl vm.swappiness=10
+sudo echo 'vm.swappiness=10' >> /etc/sysctl.conf
+sudo /sbin/sysctl vm.vfs_cache_pressure=50
+sudo echo 'vm.vfs_cache_pressure=50' >> /etc/sysctl.c
 echo ""
 echo "if this is your first run it is now time to secure the mysql installation this will allow you to create the root mysql passowrd needed later on "
 echo ""
@@ -75,4 +75,9 @@ echo '# PUT YOUR MYSQL PASSWORD YOU JUST ENTERED BELOW, THEN PRESS CTRL+X and Y 
 echo 'MYSQL_PASSWORD=changeme' >> ~/freeradius3-genie/.env
 
 nano ~/freeradius3-genie/.env
+
+echo ""
+echo "it is now time to run genie amd perform initial configuration once complete the coa-relay configuration (/etc/freeradius/sites-enabled/coa-relay) "
+echo "will need to be edited by hand as genie currently does not have logic to create the coa homeserver/nas endpoint config "
+echo ""
 # eof
