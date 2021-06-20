@@ -2,7 +2,7 @@
 #
 ###     configure system to use networkradius.com binary packages these are newer than those supplied by ubuntu     ###
 #
-###     determine for distribution and version and check for existing repo entry    ###
+###     determine for distribution and version and setup the networkradius repo if needed    ###
 #
 
 if lsb_release -d | awk -F"\t" '{print $2}' | grep -q Ubuntu
@@ -61,13 +61,27 @@ fi
 ###     import networkradius.com pgp key    ###
 #
 
-sudo apt-key adv --keyserver keys.gnupg.net --recv-key 0x41382202
+if apt-key list | grep -q networkradius
+    then 
+        echo "the networkradius repo gpg key was found"
+    else
+        echo "the networkradius repo gpg key was not found we will add it to the local keyring now "
+        sudo apt-key adv --keyserver keys.gnupg.net --recv-key 0x41382202
+        if apt-key list | grep -q networkradius
+            then 
+                echo "the networkradius gpg key was added successfully"
+            else 
+                echo "something went wrong while adding the network radius gpg key"
+        fi
+fi
+
+#
+###     main package setup      ###
+#
 
 sudo apt-get update --yes
 sudo apt-get upgrade --yes
-sudo apt-get install --yes php-cli php-mbstring php-mysql unzip
-sudo apt-get install --yes mariadb-server mariadb-client
-sudo apt-get install --yes freeradius freeradius-common freeradius-utils freeradius-mysql
+sudo apt-get install --yes php-cli php-mbstring php-mysql unzip mariadb-server mariadb-client freeradius freeradius-common freeradius-utils freeradius-mysql
 
 #
 ###     test for an existing swap device or file, if none exists we will create one     ###
