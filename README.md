@@ -1,11 +1,16 @@
 # FreeRADIUS3 Genie
-An installer to setup and configure FreeRADIUS for use with Sonar (this version will work with FreeRADIUS v2.0 or 3.0)
+An installer to setup and configure FreeRADIUS using the NetworkRadius binaries for use with Sonar (this version will work with FreeRADIUS v3.0)
 
 ## Getting started
 
-This installer is designed to be run on [Ubuntu 18.04](http://www.ubuntu.com/download/server), but should work on most versions of Ubuntu. Download and install Ubuntu on the server you wish to run FreeRADIUS on. If you want to host it online, I recommend [Digital Ocean](https://m.do.co/c/84841b1bca8e).
+This installer is designed to be run on [Ubuntu 18.04 or 20.04](http://www.ubuntu.com/download/server), but should also work on Debian stretch or buster. 
+Download and install Debian or Ubuntu on the server you wish to run FreeRADIUS on. If you want to host it online, I recommend [Digital Ocean](https://m.do.co/c/84841b1bca8e).
 
-We have a basic bash kickstart script which can get you off and running quickly if you have a clean Ubuntu 18.04 installation. It will download mysql, freeradius, and create the swap space on the server. Run these commands from the root of your home directory.
+We have a basic bash kickstart script which can get you off and running quickly if you have a clean installation. It will configure the server for use with the freeradius binary packages provided by networkradius.com download mariadb, and create the swap space on the server if required. 
+
+Once Debian or Ubuntu is installed, SSH in and run the following commands to prepare your installation:
+
+Run these commands from the root of your home directory.
 
 1. `cd ~`
 2. `git clone https://github.com/80at8/freeradius3-genie.git`
