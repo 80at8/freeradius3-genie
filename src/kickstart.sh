@@ -2,33 +2,57 @@
 
 # configure system to use networkradius.com binary packages these are newer than those supplied by ubuntu
 
-# determine distribution and version more logic needed so we dont create multiple entries if the script is re run 
+# determine for distribution and version and check for existing repo entry
 
 if lsb_release -d | awk -F"\t" '{print $2}' | grep -q Ubuntu
     then
             if lsb_release -d | awk -F"\t" '{print $2}' | grep -q 20.04
                 then
+                    echo ""
                     echo "found ubuntu 20.04"
-                    echo "adding (deb https://packages.networkradius.com/releases/ubuntu-focal focal main) to (/etc/apt/sources.list)"
-                    sudo echo 'deb https://packages.networkradius.com/releases/ubuntu-focal focal main' >> /etc/apt/sources.list
+                    if cat /etc/apt/sources.list | grep -q networkradius
+                        then
+                            echo "networkradius package repo is already present in (/etc/apt/sources.list)"
+                        else
+                            echo "adding networkradius repo (deb https://packages.networkradius.com/releases/ubuntu-focal focal main) to (/etc/apt/sources.list)"
+                            echo 'deb https://packages.networkradius.com/releases/ubuntu-focal focal main' >> /etc/apt/sources.list
+                    fi
             elif lsb_release -d | awk -F"\t" '{print $2}' | grep -q 18.04
                 then
+                    echo ""
                     echo "found ubuntu 18.04"
-                    echo "adding ( https://packages.networkradius.com/releases/ubuntu-bionic bionic main) to (/etc/apt/sources.list)"
-                    sudo echo 'deb https://packages.networkradius.com/releases/ubuntu-bionic bionic main' >> /etc/apt/sources.list
+                    if cat /etc/apt/sources.list | grep -q networkradius
+                        then
+                            echo "networkradius package repo is already present in (/etc/apt/sources.list)"
+                        else
+                            echo "adding ( https://packages.networkradius.com/releases/ubuntu-bionic bionic main) to (/etc/apt/sources.list)"
+                            echo 'deb https://packages.networkradius.com/releases/ubuntu-bionic bionic main' >> /etc/apt/sources.list
+                    fi
             fi
 elif lsb_release -d | awk -F"\t" '{print $2}' | grep -q Debian
     then
             if lsb_release -d | awk -F"\t" '{print $2}' | grep -q stretch
                 then
+                    echo ""
                     echo "found Debian stretch"
-                    echo "adding (deb https://packages.networkradius.com/releases/debian-stretch stretch main) to (/etc/apt/sources.list)"
-                    sudo echo 'deb https://packages.networkradius.com/releases/debian-stretch stretch main' >> /etc/apt/sources.list
+                    if cat /etc/apt/sources.list | grep -q networkradius
+                        then
+                            echo "networkradius package repo is already present in (/etc/apt/sources.list)"
+                        else
+                            echo "adding (deb https://packages.networkradius.com/releases/debian-stretch stretch main) to (/etc/apt/sources.list)"
+                            echo 'deb https://packages.networkradius.com/releases/debian-stretch stretch main' >> /etc/apt/sources.list
+                    fi
             elif lsb_release -d | awk -F"\t" '{print $2}' | grep -q buster
                 then
+                    echo ""
                     echo "found Debian buster"
-                    echo "adding (deb https://packages.networkradius.com/releases/debian-buster buster main) to (/etc/apt/sources.list)"
-                    sudo echo 'deb https://packages.networkradius.com/releases/debian-buster buster main' >> /etc/apt/sources.list
+                    if cat /etc/apt/sources.list | grep -q networkradius
+                        then
+                            echo "networkradius package repo is already present in (/etc/apt/sources.list)"
+                        else
+                            echo "adding (deb https://packages.networkradius.com/releases/debian-buster buster main) to (/etc/apt/sources.list)"
+                            echo 'deb https://packages.networkradius.com/releases/debian-buster buster main' >> /etc/apt/sources.list
+                    fi
             fi
 fi
 
