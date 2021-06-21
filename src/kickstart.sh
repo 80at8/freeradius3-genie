@@ -147,10 +147,23 @@ echo ""
 echo "if this is your first run it is now time to secure the mysql installation this will allow you to create the root mysql passowrd needed later on "
 echo ""
 sudo /usr/bin/mysql_secure_installation
-echo '# PUT YOUR MYSQL PASSWORD YOU JUST ENTERED BELOW, THEN PRESS CTRL+X and Y to SAVE CHANGES' >> ~/freeradius3-genie/.env
-echo 'MYSQL_PASSWORD=changeme' >> ~/freeradius3-genie/.env
 
-nano ~/freeradius3-genie/.env
+#
+###     setup the sql server enviroment (mariadb/mysql)     ###
+#
+
+if [ -s ~/freeradius3-genie/.env ] 
+    then 
+        echo "the .env file already exists and has a non zero size you should check its contents"
+        echo "you can do so with the command (nano ~/freeradius3-genie/.env) "
+    else 
+        echo "no .env file was found at ~/freeradius3-genie/.env"
+        echo '# PUT YOUR MYSQL PASSWORD YOU JUST ENTERED BELOW, THEN PRESS CTRL+X and Y to SAVE CHANGES' >> ~/freeradius3-genie/.env
+        echo 'MYSQL_PASSWORD=changeme' >> ~/freeradius3-genie/.env
+        chmod 660 ~/freeradius3-genie/.env
+        chown root:adm ~/freeradius3-genie/.env
+        nano ~/freeradius3-genie/.env
+fi
 
 echo ""
 echo "it is now time to run genie amd perform initial configuration once complete the coa-relay configuration (/etc/freeradius/sites-enabled/coa-relay) "
