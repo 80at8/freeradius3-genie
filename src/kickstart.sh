@@ -143,11 +143,6 @@ if cat /etc/sysctl.conf | grep -q vm.vfs_cache_pressure
         sudo /sbin/sysctl vm.vfs_cache_pressure=50
 fi
 
-echo ""
-echo "if this is your first run it is now time to secure the mysql installation this will allow you to create the root mysql passowrd needed later on "
-echo ""
-sudo /usr/bin/mysql_secure_installation
-
 #
 ###     setup the sql server enviroment (mariadb/mysql)     ###
 #
@@ -158,11 +153,19 @@ if [ -s ~/freeradius3-genie/.env ]
         echo "you can do so with the command (nano ~/freeradius3-genie/.env) "
     else 
         echo "no .env file was found at ~/freeradius3-genie/.env"
+        echo "as no .env file was found we will currently assume this is the first time the kickstart script has been run "
+        echo "and so we will now also run the /usr/bin/mysql_secure_installation script to secure the sql installation "
+        echo "creating a password for the mysql root user, removing remote root access the test db and user "
+        echo "the sql root password will be needed in the next step, setting up the .env file "
+        echo ""
+        sudo /usr/bin/mysql_secure_installation
+        echo ""
         echo '# PUT YOUR MYSQL PASSWORD YOU JUST ENTERED BELOW, THEN PRESS CTRL+X and Y to SAVE CHANGES' >> ~/freeradius3-genie/.env
         echo 'MYSQL_PASSWORD=changeme' >> ~/freeradius3-genie/.env
         chmod 660 ~/freeradius3-genie/.env
         chown root:adm ~/freeradius3-genie/.env
         nano ~/freeradius3-genie/.env
+        echo ""        
 fi
 
 echo ""
