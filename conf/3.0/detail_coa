@@ -1,0 +1,12 @@
+# enable this module to configure coa detail logs, the logs are used to 
+# store the incoming coa request attributes before they are relayd on to the NAS 
+#
+    detail detail_coa {
+        filename = ${radacctdir}/detail_coa
+        escape_filenames = no
+        permissions = 0600
+        header = "%t"
+        locking = yes
+    }
+#
+

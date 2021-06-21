@@ -28,7 +28,7 @@ class DatabaseSetup
         $sth = $this->dbh->prepare("GRANT ALL PRIVILEGES ON radius.* TO 'radius'@'localhost' IDENTIFIED BY ?");
         $sth->execute([getenv('MYSQL_PASSWORD')]);
         $this->dbh->exec("FLUSH PRIVILEGES");
-        exec("/usr/bin/mysql -uroot -p" . escapeshellarg(getenv("MYSQL_PASSWORD")) . " radius < /etc/freeradius/3.0/mods-config/sql/main/mysql/schema.sql");
+        exec("/usr/bin/mysql -uroot -p" . escapeshellarg(getenv("MYSQL_PASSWORD")) . " radius < /etc/freeradius/mods-config/sql/main/mysql/schema.sql");
         $this->climate->info("SUCCESS!");
     }
 
@@ -145,7 +145,7 @@ class DatabaseSetup
         {
             $sth = $this->dbh->prepare("FLUSH PRIVILEGES");
             $sth->execute();
-            $this->climate->lightMagenta("Added a user with the username $username and the password $password. Copy this username and password, you'll need it!");
+            $this->climate->lightMagenta("Added a user with the username $username and the password $password . Copy this username and password, you'll need it!");
         }
         else
         {

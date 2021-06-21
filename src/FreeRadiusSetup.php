@@ -15,6 +15,7 @@ class FreeRadiusSetup
 
     /**
      * Configure the FreeRADIUS configuration files
+     * for the networkradius.com binary packages
      */
     public function configureFreeRadiusToUseSql()
     {
@@ -23,7 +24,7 @@ class FreeRadiusSetup
         $v = `dpkg -s freeradius | grep Version`;
         $v = explode(" ",$v);
         $c = "/../conf/" . substr($v[1],0,1) . ".0/";
-
+        $r = `apt-cache policy freeradius | grep networkradius`;
         switch ($c) {
 
         case "/../conf/3.0/":
@@ -31,12 +32,16 @@ class FreeRadiusSetup
             $this->climate->info("Detected FreeRADIUS version 3.x.x");
             $this->climate->lightBlue()->inline("Configuring FreeRADIUS to use the SQL database... ");
             try {
-                CommandExecutor::executeCommand("/bin/cp " . __DIR__ . $c . "radiusd.conf /etc/freeradius/3.0/");
-                CommandExecutor::executeCommand("/bin/cp " . __DIR__ . $c . "sql /etc/freeradius/3.0/mods-available");
-                CommandExecutor::executeCommand("/bin/ln -fs /etc/freeradius/3.0/mods-available/sql -t /etc/freeradius/3.0/mods-enabled/");
-                CommandExecutor::executeCommand("/bin/cp " . __DIR__ . $c . "default /etc/freeradius/3.0/sites-available/");
-                CommandExecutor::executeCommand("/bin/ln -fs /etc/freeradius/3.0/sites-available/default -t /etc/freeradius/3.0/sites-enabled/");
-                CommandExecutor::executeCommand("/bin/sed -i 's/password = \"radpass\"/password = \"$mysqlPassword\"/g' /etc/freeradius/3.0/mods-enabled/sql");
+                CommandExecutor::executeCommand("/bin/cp " . __DIR__ . $c . "radiusd.conf /etc/freeradius//");
+                CommandExecutor::executeCommand("/bin/cp " . __DIR__ . $c . "sql /etc/freeradius/mods-available");
+                CommandExecutor::executeCommand("/bin/ln -fs /etc/freeradius/mods-available/sql -t /etc/freeradius/mods-enabled/");
+                CommandExecutor::executeCommand("/bin/cp " . __DIR__ . $c . "detail_coa /etc/freeradius/mods-available");
+                CommandExecutor::executeCommand("/bin/ln -fs /etc/freeradius/mods-available/detail_coa -t /etc/freeradius/mods-enabled/");
+                CommandExecutor::executeCommand("/bin/cp " . __DIR__ . $c . "default /etc/freeradius/sites-available/");
+                CommandExecutor::executeCommand("/bin/ln -fs /etc/freeradius/sites-available/default -t /etc/freeradius/sites-enabled/");
+                CommandExecutor::executeCommand("/bin/cp " . __DIR__ . $c . "coa-relay /etc/freeradius/sites-available/");
+                CommandExecutor::executeCommand("/bin/ln -fs /etc/freeradius/sites-available/coa-relay -t /etc/freeradius/sites-enabled/");
+                CommandExecutor::executeCommand("/bin/sed -i 's/password = \"radpass\"/password = \"$mysqlPassword\"/g' /etc/freeradius/mods-enabled/sql");
                 CommandExecutor::executeCommand("/usr/sbin/service freeradius restart");
             }
             catch (RuntimeException $e)
@@ -49,7 +54,8 @@ class FreeRadiusSetup
 
             $this->climate->info("SUCCESS!");
             break;
-        
+
+
         case "/../conf/2.0/":
 
             $this->climate->info("Detected FreeRADIUS version 2.x.x");

@@ -1,14 +1,21 @@
 # FreeRADIUS3 Genie
-An installer to setup and configure FreeRADIUS for use with Sonar (this version will work with FreeRADIUS v2.0 or 3.0)
+An installer to setup and configure FreeRADIUS using the NetworkRadius binaries for use with Sonar (this version will work with FreeRADIUS v3.0)
 
 ## Getting started
 
-This installer is designed to be run on [Ubuntu 18.04](http://www.ubuntu.com/download/server), but should work on most versions of Ubuntu. Download and install Ubuntu on the server you wish to run FreeRADIUS on. If you want to host it online, I recommend [Digital Ocean](https://m.do.co/c/84841b1bca8e).
+This installer is designed to be run on a clean installation of [Ubuntu 18.04 or 20.04](http://www.ubuntu.com/download/server), but should also work on Debian stretch or buster.
 
-We have a basic bash kickstart script which can get you off and running quickly if you have a clean Ubuntu 18.04 installation. It will download mysql, freeradius, and create the swap space on the server. Run these commands from the root of your home directory.
+Download and install Debian or Ubuntu on the server you wish to run FreeRADIUS on. 
+
+The bash kickstart script will get you up and running quickly. 
+It will configure the server for use with the freeradius binary packages provided by networkradius.com, download mariadb, and create swap space on the server if required. 
+
+Once Debian or Ubuntu is installed, SSH in and run the following commands to prepare your installation:
+
+Run these commands from the root of your home directory.
 
 1. `cd ~`
-2. `git clone https://github.com/80at8/freeradius3-genie.git`
+2. `git clone https://github.com/ellisway/freeradius3-genie.git`
 3. `sudo chmod 755 ~/freeradius3-genie/src/kickstart.sh` 
 4. `sudo ~/freeradius3-genie/src/kickstart.sh`
 5. No errors? Great! Go to section 'Completing preliminary installation', otherwise start at step 1 below.
@@ -17,18 +24,29 @@ We have a basic bash kickstart script which can get you off and running quickly 
 
 Once Ubuntu is installed, SSH in and run the following commands to prepare installation:
 
-1. `sudo apt-get update`
-2. `sudo apt-get upgrade`
-3. `sudo apt-get install php-cli php-mbstring php-mysql unzip`
+For Ubuntu 18.04 
 
-If you're using an older version of Ubuntu, you may need to run `sudo apt-get install php5-cli php5-mbstring php5-mysql unzip` instead.
+1. `sudo echo 'deb https://packages.networkradius.com/releases/ubuntu-bionic bionic main' >> /etc/apt/sources.list `
+2. `sudo apt-get update`
+4. `sudo apt-get upgrade`
+5. `sudo apt-get install php-cli php-mbstring php-mysql unzip` 
 
-Once these commands are complete, you should install MariaDB (a replacement for MySQL) and the FreeRADIUS server. Run the following commands to complete this step:
+Once these commands are complete, you should install MariaDB (a replacement for MySQL) and the FreeRADIUS server itself. 
+Run the following commands to complete these steps:
 
 1. `sudo apt-get install mariadb-server mariadb-client`
 2. `sudo apt-get install freeradius freeradius-common freeradius-utils freeradius-mysql`
 
-Once these commands are complete, you can download FreeRADIUS Genie by executing `wget https://github.com/SonarSoftware/freeradius_genie/archive/master.zip` and then `unzip master.zip`. Once unzipped, enter the directory by typing `cd freeradius_genie-master`.
+Once all packages are installed, you can download FreeRADIUS3 Genie.
+
+Run these commands from the root of your home directory.
+
+1. `cd ~`
+2. `wget https://github.com/ellisway/freeradius3-genie/archive/master.zip` 
+3. `unzip master.zip`
+4. `mv freeradius3_genie-master/ freeradius3_genie/`
+5. `cd freeradius3_genie`
+6. `php genie` 
 
 ### A note on hosting
 
